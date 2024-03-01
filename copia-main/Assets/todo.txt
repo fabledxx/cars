@@ -1,0 +1,30 @@
+Features TODO:
+    - Ackermann steering / bicycle model
+    - Second jump
+    - lateral friction model as in RL (ratio between Vx/Vy)
+    - Stabilizing moment (if 2 wheels touch ground, calculate the ground normal and apply moment so that the dot/cross product is 0)
+    - Dodges 
+    - Better drift (maybe apply torque or less drag on rear wheels)
+    - Ball car interaction (power hit depended on the distance from CoM etc)
+    - Input manager and profiles for PS4 controller (maybe controller auto detect OR use the new input system)
+    - Wheel colliders should probably detect the ground / walls too
+
+Problems:
+    - Fix Sticky forces
+    - lateral speed goes behind the wheels (visual bug only)
+    - Camera fixes (maybe use Cinemamachine, camera as in Kart game)
+    - Aerial CoM (?)
+    - Breakdancing (sphere collider touches the ground but not the raycast, enables aircontrol on the ground)
+    - No fake friction when upside down on the ground
+
+Low priority:
+    - Goal explosion and net visual effect
+    - Sounds
+    - Car hit sparks
+    - Replace interpolation if else madness for throttle and turn radius with animation curves :)
+ 
+Done:
+    - Auto SHIFT click on the body in the scene view
+    - Lateral friction force on walls
+    - Ball trail
+    - Braking

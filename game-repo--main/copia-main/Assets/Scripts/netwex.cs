@@ -6,8 +6,8 @@ using Cinemachine;
 
 public class netwex : NetworkBehaviour
 {
-    [SerializeField]  public CinemachineVirtualCamera vc;
-    //[SerializeField] public CinemachineFreeLook vcc; 
+    //[SerializeField]  public CinemachineVirtualCamera vc;
+    [SerializeField] public CinemachineFreeLook vcc; 
     public Transform[] spawnPoints; // Assign these with two spawn points in the editor
     //public PlayerRespawner py;
      //public Ball ball;
@@ -16,12 +16,11 @@ public class netwex : NetworkBehaviour
 
         if (IsOwner)
         {
-            vc.Priority = 1;
+            vcc.Priority = 1;
            
        
          if (IsServer && IsClient)
             {
-               
                 transform.position = spawnPoints[0].position;
                 transform.rotation = spawnPoints[0].rotation;
                 
@@ -38,7 +37,7 @@ public class netwex : NetworkBehaviour
         }
         else
         {
-            vc.Priority = 0;
+            vcc.Priority = 0;
         }
         
     }

@@ -6,6 +6,8 @@ using Unity.Netcode;
 [RequireComponent(typeof(Rigidbody))]
 public class CubeController : NetworkBehaviour
 {
+    PlayerRespawner playerRespawner;
+
     [Header("score")]
      public int score;
      
@@ -39,6 +41,9 @@ public class CubeController : NetworkBehaviour
     
     void Start()
     {
+        playerRespawner = FindObjectOfType<PlayerRespawner>();
+        playerRespawner.Respawns.Insert((int)NetworkManager.LocalClientId, gameObject);
+
         _rb = GetComponent<Rigidbody>();
         _rb.centerOfMass = cogLow.localPosition;
         _rb.maxAngularVelocity = 5.5f;

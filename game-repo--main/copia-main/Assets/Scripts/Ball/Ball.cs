@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Unity.Netcode;
@@ -23,7 +23,6 @@ public class Ball : NetworkBehaviour
     
     void Update()
     {
-
         //TODO: move inputs to the InputController
         if (Input.GetKeyDown(KeyCode.T))
             ShootInRandomDirection(randomSpeed);
@@ -43,7 +42,7 @@ public class Ball : NetworkBehaviour
     }
 
     [ContextMenu("ResetBall")]
-    private void ResetBall()
+    public void ResetBall()
     {
         var desired = new Vector3(0, 12.23f, 0f);
         _transform.SetPositionAndRotation(desired, Quaternion.identity);
@@ -76,8 +75,8 @@ public class Ball : NetworkBehaviour
     private void OnCollisionEnter(Collision col)
     {
         float force = initialForce + col.rigidbody.velocity.magnitude * hitMultiplier;
-            //Vector3 dir = transform.position - col.contacts[0].point;
-            var dir = transform.position - col.transform.position;
+        //Vector3 dir = transform.position - col.contacts[0].point;
+        var dir = transform.position - col.transform.position;
         if (col.gameObject.CompareTag("Player"))
         {
             var networkObject = col.gameObject.GetComponent<NetworkObject>();
@@ -86,14 +85,14 @@ public class Ball : NetworkBehaviour
                 RequestOwnershipServerRpc(networkObject.OwnerClientId);
             }
 
-            
-            
-            
-            _rb.AddForce(dir.normalized * force);
-            }
-        
 
- 
+
+
+            _rb.AddForce(dir.normalized * force);
+        }
+
+
+
         if (col.gameObject.CompareTag("Ground"))
             isTouchedGround = true;
 
@@ -104,11 +103,35 @@ public class Ball : NetworkBehaviour
         //        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y - SlowVelocityGround, rb.velocity.z);
         //    }
     }
-    public void Respawn()
+
+    //private void OnCollisionExit(Collision col)
+    //{
+    //    if (col.gameObject.CompareTag("Player"))
+    //    {
+    //        ResetOwnershipToHostServerRpc();
+    //        print("ewew");
+    //    }
+    //}
+
+    public bool Respawn()
     {
         // Set the position to the spawn point (you can hardcode it or reference a Transform)
         transform.position = new Vector3(0, 1, 0); // Example position
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
+        return true;
+    }
+
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ResetOwnershipToHostServerRpc()
+    {
+        // Check if the object has a NetworkObject component
+        var networkObject = GetComponent<NetworkObject>();
+        if (networkObject != null)
+        {
+            // Change ownership back to the server/host
+            networkObject.ChangeOwnership(NetworkManager.Singleton.LocalClientId);
+        }
     }
 }
